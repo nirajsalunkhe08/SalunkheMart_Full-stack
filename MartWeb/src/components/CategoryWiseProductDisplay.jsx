@@ -86,6 +86,7 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
           )}
 
           {data.map((p, index) => (
+            console.log("productdata",p),
             <CardProduct
               key={p._id + "CartegoryWiseProductDisplay" + index}
               data={p}
