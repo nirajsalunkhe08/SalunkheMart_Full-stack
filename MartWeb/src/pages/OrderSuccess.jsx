@@ -12,7 +12,7 @@ const OrderSuccess = () => {
       <div className="flex justify-center mt-4">
   <div className="w-[75vw] h-[30vh] bg-gradient-to-r from-emerald-600 to-blue-600 flex flex-col justify-center items-center rounded-lg shadow-lg text-white p-6">
     <h1 className="text-3xl font-bold mb-2">🙏 Thank You!</h1>
-    <p className="text-lg">For visiting <span className="font-semibold">Salunkhe Mart</span></p>
+    <p className="text-lg">For Visiting <span className="font-semibold">Salunkhe Mart</span></p>
     <p className="text-md mt-1 italic">We appreciate your support — come again soon!</p>
     <p className="text-sm mt-2">✨ Great offers & fresh products are always waiting for you ✨</p>
     <Link to={"/"} className='underline  px-4 py-1 hover:text-white  hover:bg-blue-500'>Shop More</Link>
