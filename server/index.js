@@ -16,10 +16,10 @@ import addressRouter from './route/address.route.js';
 import orderRouter from './route/order.route.js';
 
 const app = express()
-app.use(cors({
-    credentials:true,
-    origin:process.env.FRONTED_URL
-}))
+const allowedOrigins = [
+  "http://localhost:5173", // for local dev
+  "https://salunkhe-mart-full-stack-v491.vercel.app" // deployed frontend
+];
 app.use(express.json())
 app.use(express.json());
 app.use(cookieParser());
