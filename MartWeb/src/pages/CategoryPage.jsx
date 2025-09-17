@@ -55,7 +55,7 @@ const CategoryPage = () => {
         }
     }
     useEffect(()=>{
-       
+       fetchCategory()
     },[])
 
     const handleDeleteCategory = async()=>{
