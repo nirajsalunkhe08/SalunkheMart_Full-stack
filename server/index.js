@@ -24,18 +24,6 @@ app.use(cors({
     origin: process.env.FRONTEND_URL
 }));
 
-app.use(cors({
-  credentials: true,
-  origin: function(origin, callback){
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.includes(origin)){
-      return callback(null, true);
-    } else {
-      return callback(new Error("Not allowed by CORS"));
-    }
-  }
-}));
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
