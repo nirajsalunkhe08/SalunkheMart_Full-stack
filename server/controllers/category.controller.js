@@ -56,7 +56,9 @@ export const getCategoryController = async(request,response)=>{
             success : true
         })
     } catch (error) {
+        console.log("categoryftech",error)
         return response.status(500).json({
+           
             message : error.messsage || error,
             error : true,
             success : false
