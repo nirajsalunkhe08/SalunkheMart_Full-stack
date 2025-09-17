@@ -14,7 +14,7 @@ import { useGlobalContext } from "../provider/GlobalProvider";
 
 
 
-const userMenu = ({ close }) => {
+const UserMenu = ({ close }) => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -126,4 +126,4 @@ const handleClose=()=>{
 
 };
 
-export default userMenu;
+export default UserMenu;

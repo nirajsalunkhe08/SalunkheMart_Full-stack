@@ -1,7 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Libertinus+Math&family=Libertinus+Mono&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Libertinus+Math&family=Libertinus+Mono&display=swap');
 body{
      font-family: "Libertinus Math", system-ui;
   font-weight: 400;
