@@ -27,7 +27,32 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
-app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        "script-src": [
+          "'self'",
+          "https://js.stripe.com",
+          "https://m.stripe.network",
+          "'sha256-e357n1PxCJ8d03/QCSKaHFmHF1JADyvSHdSfshxM494='",
+          "'sha256-5DA+a07wxWmEka9IdoWjSPVHb17Cp5284/lJzfbl8KA='",
+          "'sha256-/5Guo2nzv5n/w6ukZpOBZOtTJBJPSkJ6mhHpnBgm3Ls='",
+          "blob:" // allow Stripe blob scripts
+        ],
+        "script-src-elem": [
+          "'self'",
+          "https://js.stripe.com",
+          "https://m.stripe.network",
+          "blob:"
+        ]
+      }
+    }
+  })
+);
+
 
 const PORT = process.env.PORT || 7878;
 
