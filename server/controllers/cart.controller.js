@@ -140,3 +140,27 @@ export const deleteCartItemQtyController = async(request,response)=>{
         })
     }
 }
+// In cart.controller.js
+export const clearCartController = async (request, response) => {
+    try {
+        const userId = request.userId // from auth middleware
+        
+        
+        await CartProductModel.deleteMany({
+            userId: userId
+        })
+        
+        return response.json({
+            message: "Cart cleared successfully",
+            error: false,
+            success: true,
+            data: []
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
