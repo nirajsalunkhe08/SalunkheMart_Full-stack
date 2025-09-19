@@ -68,7 +68,7 @@ const Header = () => {
     }
   }, [addressList, currentAddress, setCurrentAddress]);
   return (
-    <header className="h-auto sticky top-0 z-40 bg-rose-300 shadow-md">
+    <header className="h-auto sticky top-0 z-40 bg-rose-500 shadow-md">
       {/* Top Header Section (hide on mobile + /search) */}
       {!(isSearchPage && isMobile) && (
         <div className="container mx-auto px-2 flex justify-between items-center py-2 lg:py-0">
