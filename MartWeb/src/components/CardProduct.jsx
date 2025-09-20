@@ -37,7 +37,7 @@ const CardProduct = ({data}) => {
                 <div>
                     {
                         Boolean(data.discount) && (
-                            <p className='text-green-700 w-fit rounded-md bg-green-300 text-[10px] lg:text-xs px-1'>{data.discount}%</p>
+                            <p className='text-green-700 w-fit rounded-md bg-green-300 text-[10px] lg:text-xs px-1'>{data.discount}% Discount</p>
                         )
                     }
                 </div>

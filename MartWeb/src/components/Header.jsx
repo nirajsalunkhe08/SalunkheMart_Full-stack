@@ -106,7 +106,7 @@ const Header = () => {
                   <p className=""></p>
                   <p className="lg:text-2xl font-semibold">
                     <span className="">Deliver to:</span>{" "}
-                    <span className="text-rose-700">
+                    <span className="text-white">
                       {currentAddress.address_line}, {currentAddress.city}
                     </span>
                   </p>
