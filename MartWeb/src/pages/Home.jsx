@@ -58,7 +58,7 @@ return (
           <div className='ml-12 flex justify-center mt-4  gap-3 '>
             <h2 className='text-xl font-bold text-green-900'>Explore the Food And Grocery</h2>
           </div>
-      <div className='container mx-auto px-4 my-2 grid grid-cols-7 md:grid-cols-8 lg:grid-cols-9 gap-4'>
+      <div className='container mx-auto px-4 my-2 grid grid-cols-7 md:grid-cols-8 lg:grid-cols-12 gap-4'>
         
         {loadingCategory ? (
           new Array(12).fill(null).map((_, index) => (

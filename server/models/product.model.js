@@ -49,28 +49,6 @@ const productSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-
-  more_details: {
-    type: {
-      weight: {
-        type: String,
-        default: "",
-      },
-      origin: {
-        type: String,
-        default: "",
-      },
-      manufacturer: {
-        type: String,
-        default: "",
-      },
-      expiry_date: {
-        type: Date,
-      },
-    },
-    default: {},
-  },
-
   publish: {
     type: Boolean,
     default: false,
