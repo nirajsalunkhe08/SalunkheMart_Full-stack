@@ -13,10 +13,13 @@ const orderSchema = new mongoose.Schema({
     unique: true
   },
 
-  product_details: {
+  product_details: [{
+    productId: { type: mongoose.Schema.ObjectId, ref: 'Product', required: true },
     name: { type: String, required: true },
+    priceAtPurchase: { type: Number, required: true },
+    quantity: { type: Number, required: true },
     image: [{ type: String, required: true }]
-  },
+}],
 
   payment_id: {
     type: String,

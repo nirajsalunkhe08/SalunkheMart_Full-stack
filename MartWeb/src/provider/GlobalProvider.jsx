@@ -7,7 +7,7 @@ import { handleAddItemCart } from "../store/cartProduct";
 import toast from "react-hot-toast";
 import { PriceWithDiscount } from "../utils/PriceWithDiscount";
 import { handleAddAddress } from "../store/addressSlice";
-import { setOrder } from "../store/orderSlice"; 
+import { setOrders } from "../store/orderSlice"; 
 
 export const GlobalContext = createContext(null);
 
@@ -94,7 +94,7 @@ const GlobalProvider = ({ children }) => {
       })
       const {data : responseData}=response
       if (responseData.success) {
-        dispatch(setOrder(responseData.data))
+        dispatch(setOrders(responseData.data))
       }
     } catch (error) {
       AxiosToastError(error)

@@ -158,7 +158,15 @@ const SummaryApi={
      getOrderItems:{
         url:"/api/order/order-list",
         method:"get"
-     }
+     },
+        generateOrderInvoice:{
+        url:"/api/order/generate-invoice/:orderId",
+        method:"get"
+     },
+        getOrderBySessionId:{
+        url:"/api/order/session/:sessionId",
+        method:"get"
+     },
 
 
 

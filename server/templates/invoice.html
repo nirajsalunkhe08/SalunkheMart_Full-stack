@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>  body { font-family: sans-serif; }
+        .invoice-box { max-width: 800px; margin: auto; padding: 30px; border: 1px solid #eee; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); }
+        .item-table table { width: 100%; line-height: inherit; text-align: left; border-collapse: collapse; }
+        .item-table table td { padding: 5px; vertical-align: top; }
+        .item-table table tr.heading td { background: #eee; border-bottom: 1px solid #ddd; font-weight: bold; }
+        .item-table table tr.item td { border-bottom: 1px solid #eee; }
+        .total { font-weight: bold; text-align: right; } </style>
+</head>
+<body>
+    <div class="invoice-box">
+        <h2>Invoice</h2>
+        <p>
+            <strong>Invoice #:</strong> {{invoiceNumber}}<br>
+            <strong>Order ID:</strong> {{orderId}}<br>
+            <strong>Date:</strong> {{orderDate}}
+        </p>
+        <p>
+            <strong>Bill To:</strong><br>
+            {{customerName}}<br>
+            {{shippingAddress.address_line}}<br> {{shippingAddress.city}}, {{shippingAddress.pincode}}
+        </p>
+        <div class="item-table">
+            <table>
+                <tr class="heading">
+                    <td>Item</td>
+                    <td>Quantity</td>
+                    <td>Price</td>
+                    <td>Total</td>
+                </tr>
+                {{#each items}}
+                <tr class="item">
+                    <td>{{this.name}}</td>
+                    <td>{{this.quantity}}</td>
+                    <td>₹{{this.priceAtPurchase}}</td>
+                    <td>₹{{this.total}}</td>
+                </tr>
+                {{/each}}
+                <tr class="total">
+                    <td colspan="3"></td>
+                    <td><strong>Grand Total: ₹{{totalAmount}}</strong></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
