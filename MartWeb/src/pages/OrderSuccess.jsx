@@ -91,9 +91,16 @@ const OrderSuccess = () => {
       return;
     }
     const doc = new jsPDF();
+    doc.setFont("helvetica", "bold");
+  doc.setFontSize(22);
+  doc.text("Salunkhe Mart", 14, 20);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text("Mumbai, Maharashtra", 14, 28);
     
-    doc.setFontSize(20);
-    doc.text("Invoice", 14, 22);
+    doc.setFont("helvetica", "bold");
+  doc.setFontSize(28);
+  doc.text("INVOICE", 196, 20, { align: "right" });
     doc.setFontSize(12);
     doc.text(`Order ID: ${order.orderId || 'N/A'}`, 14, 35);
     doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString()}`, 14, 42);
@@ -115,6 +122,12 @@ const OrderSuccess = () => {
       body: tableBody,
       foot: [['', '', 'Grand Total', `Rs. ${order.totalAmt}`]]
     });
+     let pageHeight = doc.internal.pageSize.height;
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "italic");
+  doc.setTextColor(150);
+   // Grey color for footer text
+  doc.text("Thank you for your business!", 105, pageHeight - 10, { align: "center" });
     doc.save(`invoice-${order.orderId}.pdf`);
   };
 
