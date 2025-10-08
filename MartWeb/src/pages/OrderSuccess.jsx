@@ -10,6 +10,7 @@ import { setLatestOrder } from '../store/orderSlice';
 import SummaryApi from '../common/SummaryApi';
 import Axios from '../utils/Axios';
 import AxiosToastError from '../utils/AxiosToastError';
+import { IconBase } from 'react-icons/lib';
 
 const OrderSuccess = () => {
   const location = useLocation();
@@ -83,51 +84,100 @@ const OrderSuccess = () => {
     }
   }, [dispatch, currentOrder]);
 
-  const generateInvoicePDF = (order, user) => {
-    if (!order || !user) {
-      toast.error("Order details not available to generate invoice.");
-      return;
-    }
-    const doc = new jsPDF();
-    doc.setFont("helvetica", "bold");
-  doc.setFontSize(22);
-  doc.text("Salunkhe Mart", 14, 20);
+const generateInvoicePDF = (order, user) => {
+  if (!order || !user) {
+    toast.error("Order details not available to generate invoice.");
+    return;
+  }
+
+  const doc = new jsPDF();
+  const primaryColor = [22, 160, 133]; // A nice green color for branding
+  const secondaryColor = [44, 62, 80]; // A dark grey for text
+
+  // --- 1. HEADER ---
+  doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+  doc.rect(0, 0, 210, 30, 'F'); // Top banner rectangle
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(28);
+  doc.setTextColor(255, 255, 255); // White text
+  doc.text("INVOICE", 196, 20, { align: "right" });
+
+  doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
+  doc.setFontSize(16);
+  doc.text("Salunkhe Mart", 14, 45);
+
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  doc.text("Mumbai, Maharashtra", 14, 28);
-    
-    doc.setFont("helvetica", "bold");
-  doc.setFontSize(28);
-  doc.text("INVOICE", 196, 20, { align: "right" });
-    doc.setFontSize(12);
-    doc.text(`Order ID: ${order.orderId || 'N/A'}`, 14, 35);
-    doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString()}`, 14, 42);
-    doc.text("Bill To:", 14, 55);
-    doc.text(user.name || 'N/A', 14, 62);
-    if (order.delivery_address) {
-        doc.text(order.delivery_address.address_line || '', 14, 69);
-        doc.text(`${order.delivery_address.city || ''}, ${order.delivery_address.pincode || ''}`, 14, 76);
-    }
-    const tableBody = order.product_details.map(item => [
-        item.name,
-        item.quantity,
-        `Rs. ${item.priceAtPurchase}`,
-        `Rs. ${item.quantity * item.priceAtPurchase}`
-    ]);
-    autoTable(doc, {
-      startY: 85,
-      head: [['Item Name', 'Quantity', 'Price', 'Total']],
-      body: tableBody,
-      foot: [['', '', 'Grand Total', `Rs. ${order.totalAmt}`]]
-    });
-     let pageHeight = doc.internal.pageSize.height;
+  doc.text("Navi Mumbai, Maharashtra, India", 14, 52);
+
+  // --- 2. ORDER & CUSTOMER DETAILS (Two-column layout) ---
+  doc.setFont("helvetica", "bold");
+  doc.text("Bill To:", 14, 70);
+  doc.setFont("helvetica", "normal");
+  doc.text(user.name || 'N/A', 14, 76);
+  if (order.delivery_address) {
+    doc.text(order.delivery_address.address_line || '', 14, 82);
+    doc.text(`${order.delivery_address.city || ''}, ${order.delivery_address.pincode || ''}`, 14, 88);
+  }
+
+doc.setFont("helvetica", "bold");
+doc.text("Order ID:", 132, 70); // Was 150
+doc.text("Date:", 132, 76);    // Was 150
+doc.setFont("helvetica", "normal");
+doc.text(order.orderId || 'N/A', 150, 70); // Was 170
+doc.text(new Date(order.createdAt).toLocaleDateString(), 150, 76); // Was 170
+  // --- 3. ITEMS TABLE ---
+  const tableBody = order.product_details.map(item => [
+    item.name,
+    item.quantity,
+    `Rs. ${item.priceAtPurchase.toFixed(2)}`,
+    `Rs. ${(item.quantity * item.priceAtPurchase).toFixed(2)}`
+  ]);
+
+  autoTable(doc, {
+    startY: 100,
+    head: [['Item Name', 'Quantity', 'Price', 'Total']],
+    body: tableBody,
+    theme: 'striped',
+    headStyles: {
+      fillColor: primaryColor,
+      textColor: 255,
+      fontStyle: 'bold'
+    },
+    styles: { fontSize: 10 }
+  });
+
+  // --- 4. TOTALS SECTION ---
+  let finalY = doc.lastAutoTable.finalY + 15; // Get the Y position after the table
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "bold");
+  doc.text("Grand Total:", 150, finalY);
+  doc.text(`Rs. ${order.totalAmt.toFixed(2)}`, 196, finalY, { align: "right" });
+
+  // --- 5. "THANK YOU" STAMP ---
+  let stampX = 145;
+  let stampY = doc.lastAutoTable.finalY + 25;
+  doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+  doc.setLineWidth(1);
+  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+  doc.roundedRect(stampX, stampY, 50, 20, 3, 3, 'S'); // 'S' is for stroke (outline)
+  
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.text("Thank You!", stampX + 25, stampY + 9, { align: 'center'});
   doc.setFontSize(10);
-  doc.setFont("helvetica", "italic");
-  doc.setTextColor(150);
-   
-  doc.text("Thank you for your business!", 105, pageHeight - 10, { align: "center" });
-    doc.save(`invoice-${order.orderId}.pdf`);
-  };
+  doc.text("Visit Again!", stampX + 25, stampY + 15, { align: 'center' });
+
+  // --- 6. FOOTER ---
+  let pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+  doc.setTextColor(150); // Light grey text
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.text("This is a computer-generated invoice.", 105, pageHeight - 10, { align: "center" });
+
+  doc.save(`invoice-${order.orderId}.pdf`);
+};
 
   if (loading) {
     return <p className="text-center text-lg font-semibold mt-8">Loading your order details...</p>;
@@ -141,11 +191,11 @@ const OrderSuccess = () => {
         </p>
         {currentOrder && <p className='font-semibold'>Your Order ID: {currentOrder._id}</p>}
         <div className="flex gap-4 mt-2">
-            <Link to={"/"} className='border border-blue-800 px-4 py-1 rounded hover:text-white hover:bg-blue-500'>Go To Home</Link>
+            <Link to={"/"} className='border bg-blue-500 text-white border-blue-800 px-4 py-1 rounded hover:text-white hover:bg-blue-700'>Go To Home</Link>
             {currentOrder && (
                 <button
                     onClick={() => generateInvoicePDF(currentOrder, userInfo)}
-                    className='border border-green-800 px-4 py-1 rounded text-green-800 hover:text-white hover:bg-green-600'
+                    className='border border-purple-800 px-4 py-1 rounded text-white bg-purple-500 hover:text-white hover:bg-purple-600'
                 >
                     Download Invoice
                 </button>
