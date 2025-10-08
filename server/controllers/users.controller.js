@@ -22,7 +22,15 @@ export async function registeruserController(request, response) {
         success: false,
       });
     }
+     const strongPasswordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
 
+    if (!strongPasswordRegex.test(password)) {
+      return response.status(400).json({
+        message: "Password is not strong enough. It must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character.",
+        error: true,
+        success: false,
+      });
+    }
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
       return response.status(400).json({

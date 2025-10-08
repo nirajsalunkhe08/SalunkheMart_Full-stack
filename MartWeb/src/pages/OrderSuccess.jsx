@@ -5,8 +5,6 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import toast from 'react-hot-toast';
-
-// Import your custom utils and actions
 import { handleAddItemCart } from '../store/cartProduct';
 import { setLatestOrder } from '../store/orderSlice';
 import SummaryApi from '../common/SummaryApi';
@@ -24,7 +22,7 @@ const OrderSuccess = () => {
 
   useEffect(() => {
     const findOrder = async () => {
-      // Priority 1: Check for data passed directly from CheckoutPage (for COD)
+      
       const orderFromNavState = location.state?.order;
       if (orderFromNavState) {
         setCurrentOrder(orderFromNavState);
@@ -32,7 +30,7 @@ const OrderSuccess = () => {
         return;
       }
 
-      // Priority 2: Poll for the order using session_id from URL (for Stripe)
+      
       const stripeSessionId = searchParams.get('session_id');
       if (stripeSessionId) {
         let attempts = 0;
@@ -45,7 +43,7 @@ const OrderSuccess = () => {
               setCurrentOrder(response.data.data);
               dispatch(setLatestOrder(response.data.data));
               setLoading(false);
-              return; // Success! Stop polling.
+              return; 
             }
           } catch (error) {
             console.log(`Attempt ${attempts + 1}: Order not found yet. Retrying...`);
@@ -53,23 +51,23 @@ const OrderSuccess = () => {
 
           attempts++;
           if (attempts < maxAttempts) {
-            setTimeout(pollForOrder, 2000); // Wait 2 seconds and try again
+            setTimeout(pollForOrder, 2000); 
           } else {
             toast.error("Could not retrieve your order details. Please check 'My Orders'.");
             setLoading(false);
           }
         };
 
-        pollForOrder(); // Start polling
+        pollForOrder(); 
       } else {
-          setLoading(false); // No order info available
+          setLoading(false); 
       }
     };
     
     findOrder();
   }, [location, searchParams, dispatch]);
 
-  // useEffect to clear the user's cart
+  
   useEffect(() => {
     if (currentOrder) {
       const clearCartOnServer = async () => {
@@ -126,7 +124,7 @@ const OrderSuccess = () => {
   doc.setFontSize(10);
   doc.setFont("helvetica", "italic");
   doc.setTextColor(150);
-   // Grey color for footer text
+   
   doc.text("Thank you for your business!", 105, pageHeight - 10, { align: "center" });
     doc.save(`invoice-${order.orderId}.pdf`);
   };
