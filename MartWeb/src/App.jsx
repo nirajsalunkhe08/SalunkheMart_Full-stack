@@ -77,7 +77,7 @@ function App() {
   return (
     <GlobalProvider>
       <Header />
-      <main className="min-h-[80vh] container mx-auto px-4">
+      <main className="min-h-[80vh] ">
         <Outlet />
       </main>
       <Footer />
